@@ -98,7 +98,7 @@ void Query::createSelect(QSqlQuery &qr)
     }
 
     if (qr.prepare(sql.join(' '))) {
-        for (int i = 0; i < m_whereBounds.size(); i++) {
+        for (int i = 0; i < m_whereBounds.count(); i++) {
             qr.addBindValue(m_whereBounds.at(i));
         }
     }
@@ -178,6 +178,16 @@ void Query::createRemove(QSqlQuery &qr)
     }
 }
 
+QString Query::escapeTableName(const QString &table)
+{
+    return db().driver()->escapeIdentifier(table, QSqlDriver::TableName);
+}
+
+QString Query::escapeFieldName(const QString &field)
+{
+    return db().driver()->escapeIdentifier(field, QSqlDriver::FieldName);
+}
+
 QStringList Query::entityFields(const QString &entity)
 {
     QStringList fields_list;
@@ -187,19 +197,19 @@ QStringList Query::entityFields(const QString &entity)
         QString pk_name = db().primaryIndex(entity).field(0).name();
         if (pk_name == rec.field(i).name()) {
             if (entity == m_entity) {
-                fields_list << QString("%1.%2 AS %2").arg(entity).arg(pk_name);
+                fields_list << QString("%1.%2 AS %2").arg(escapeTableName(entity)).arg(escapeFieldName(pk_name));
             }
             continue;
         }
         QString postfix;
         QString full_name = QString("%1.%2").arg(entity).arg(rec.fieldName(i));
         if (entity == m_entity) {
-            postfix = db().driver()->escapeIdentifier(rec.fieldName(i), QSqlDriver::FieldName);
+            postfix = escapeFieldName(rec.fieldName(i));
         } else {
             // TODO hove to work this with driver side escaping
             postfix = QString("\"%1\"").arg(full_name);
         }
-        fields_list << QString("%1 AS %2").arg(db().driver()->escapeIdentifier(full_name, QSqlDriver::TableName)).arg(postfix);
+        fields_list << QString("%1 AS %2").arg(escapeTableName(full_name)).arg(postfix);
     }
 
     return fields_list;

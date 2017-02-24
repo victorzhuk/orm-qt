@@ -87,6 +87,9 @@ private:
     void createUpdate(QSqlQuery&);
     void createRemove(QSqlQuery&);
 
+    QString escapeTableName(const QString &);
+    QString escapeFieldName(const QString &);
+
     QStringList entityFields(const QString &/*entity*/);
 
 private:
