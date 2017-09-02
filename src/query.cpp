@@ -334,6 +334,13 @@ Query &Query::group(const QString &fields_sql)
 Query &Query::values(const QSqlRecord &rec)
 {
     m_values = rec;
+
+    for (int i = 0; i < m_values.count(); i++) {
+        if (m_values.field(i).isNull()) {
+            m_values.remove(i);
+        }
+    }
+
     return *this;
 }
 
