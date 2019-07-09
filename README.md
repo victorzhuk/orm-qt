@@ -23,7 +23,7 @@ Let we have created a table `foobar` with fields `foo` and `bar`:
 
 ```CPP
 // ... other Qt includes
-#include <activerecord.h>
+#include "activerecord.h"
 
 // create empty record
 orm::ActiveRecord ar_obj("foobar");
