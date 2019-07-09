@@ -1,17 +1,27 @@
-## Missing Object Relation Mapping realisation in Qt framework
+# Missing Object Relation Mapping realization in Qt framework
 
 This library presents you a simple way to work with database tables like some script languages do.
 
-### Features:
+## Features
+
 - easy use and integrate with your project
 - full CRUD support with ActiveRecord pattern
 - deep integration with Qt
 - easy SQL select/insert/update/delete manipulation
 
-### Example code:
+## Installation
+
+1. Using [qpm](https://qpm.io) package manager:
+`$ qpm install pro.zhukva.orm-qt`
+
+2. Manually:
+add `include(<path-to-lib>/include.pri)` in your `*.pro` file
+
+## Example code
+
 Let we have created a table `foobar` with fields `foo` and `bar`:
 
-~~~CPP
+```CPP
 // ... other Qt includes
 #include <activerecord.h>
 
@@ -37,13 +47,15 @@ int val = ar2_obj.value("bar").toInt();
 
 // remove object
 ar2_obj.remove();
-~~~
+```
 
-### Notes
+## Notes
+
 "Where are other features?" you can ask. As I noted before, this is light library, all your need exists in Qt already.
 
 For example you need to select many records. Your example code:
-~~~CPP
+
+```CPP
 QSqlQuery qr = orm::Query::select("foobar").where("id > ?", 100).make();
 if (qr.exec()) {
         while (qr.next()) {
@@ -53,11 +65,12 @@ if (qr.exec()) {
                 ar_obj.save();
         }
 }
-~~~
+```
 
-As you can see, any wrapper only complicate code. orm-qt aim to efficiently manipulate standart Qt classes and try not to reinvent the wheel.
+As you can see, any wrapper only complicate code. orm-qt aim to efficiently manipulate standard Qt classes and try not to reinvent the wheel.
 Another example, you need to create some model. Your example code:
-~~~CPP
+
+```CPP
 // ...
 QTableView *view = new QTableView;
 QSqlQueryModel *model = new QSqlQueryModel;
@@ -74,12 +87,13 @@ if (!rec.isEmpty()) {
         ar_obj.setRecord(rec);
         // some actions...
 }
-~~~
+```
 
-If you work need any other functions or classies your can email me.
-Unfortunately this time documentation is empty. I fix it neares time, you can see `test` folder for code examples.
+If you work need any other functions or classes your can email me.
+Unfortunately this time documentation is empty. I fix it nearest time, you can see `test` folder for code examples.
 
-### License
+## License
+
 This code under MIT license  
 Home: https://github.com/victorzhuk/orm-qt  
-Author: Victor Zhuk <zhuk@protonmail.com>
+Author: Victor Zhuk <zhuk@pm.me>
